@@ -11,7 +11,8 @@ import {
   ColorPicker,
   Space,
   Upload,
-  Message
+  Message,
+  Drawer
 } from '@arco-design/web-react';
 import html2canvas from 'html2canvas';
 
@@ -33,7 +34,7 @@ const App = () => {
   const [form] = Form.useForm();
   const [config, setConfig] = useState(defaultValue);
   const [imageUrl, setImageUrl] = useState('');
-  const [showPanel, setShowPanel] = useState(true);
+  const [showDrawer, setShowDrawer] = useState(true);
 
   const wmProps = useMemo(() => {
     const {
@@ -135,8 +136,8 @@ const App = () => {
           </Space>
           <Button 
             type="primary" 
-            icon={showPanel ? <IconRight /> : <IconLeft />}
-            onClick={() => setShowPanel(!showPanel)}
+            icon={showDrawer ? <IconRight /> : <IconLeft />}
+            onClick={() => setShowDrawer(!showDrawer)}
           >
             控件
           </Button>
@@ -173,23 +174,21 @@ const App = () => {
       </div>
 
       {/* 右侧控制面板 */}
-      <div style={{ position: 'fixed', right: 12, top: '50%', transform: 'translateY(-50%)', zIndex: 1000 }}>
-        
+      <Drawer
+        mask={false}
+        width={310}
+        footer={null}
+        title={null}
+        visible={showDrawer}
+        onCancel={() => setShowDrawer(false)}
+        style={{
+          borderLeft: '1px solid var(--color-border-2)',
+        }}
+      >
         
           <Form 
             form={form} 
             layout='vertical' 
-            style={{ 
-              padding: '16px',
-              borderRadius: '12px',
-              boxShadow: 'var(--shadow)',
-              width: '264px', 
-              flexShrink: 0,
-              backgroundColor: 'rgba(255,255,255,0.9)',
-              backdropFilter: 'blur(10px)',
-              transition: 'transform 0.3s ease',
-              transform: `translateX(${showPanel ? 0 : 'calc(100% + 24px)'})`,
-            }} 
             onValuesChange={() => {
               setConfig(form.getFieldsValue())
             }}
@@ -222,8 +221,8 @@ const App = () => {
                 </Form.Item>
               </Space>
             </Form.Item>
-          </Form>
-      </div>
+        </Form>
+      </Drawer>
     </div>
   );
 };
